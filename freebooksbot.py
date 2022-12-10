@@ -27,15 +27,19 @@ class TootFramer():
 
         return toot
 
-    #UNDER CONSTRUCTION - Framer for a random project Gutenburg book
+    #Framer for a random project Gutenburg book
     def gutenburg(book_num):
         #scrape the page, push into BeautifulSoup object
         r = requests.get('https://www.gutenberg.org/ebooks/' + str(book_num))
         soup = BeautifulSoup(r.text, 'html.parser') 
 
         #Get key post elements
+        book_title = soup.find("title").text.split(" - ")[0]
+        book_cover = soup.find("img",{"class":"cover-art"})['src']
 
         #Build the post
+        toot = "From Project Gutenburg:\n" + book_title + "\n"
+        toot = toot + "\n\nGet it at: https://www.gutenburg.org/ebooks/" + str(book_num))
 
         return toot
 
@@ -44,9 +48,7 @@ now = datetime.now()
 if hour in ['7','15','23']: #post the Packt free ebook 3 times a day
     prepared_toot = TootFramer.packt()
 else: #for now, pull from Project Gutenburg
-    #v---UNDER CONSTRUCTION---v
-    #prepared_toot = TootFramer.gutenburg(random.randint(1,69500))
-    pass
+    prepared_toot = TootFramer.gutenburg(random.randint(1,69500))
 
 #Now, for the tooting!
 mastodon = Mastodon(access_token = 'pytooter_usercred.secret') #create a Mastodon interface object, login
