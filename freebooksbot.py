@@ -1,12 +1,13 @@
-import requests, random, io
+#!/usr/bin/python3
+import requests, random, io, os, sys
 from bs4 import BeautifulSoup
 from datetime import datetime
 from mastodon import Mastodon
 
 #Application variables
 application_name = "freebooksbot"
-secret_loc = "./freebooksbot_usercred.secret"
-server_api_link = "https://botsin.space/api/v2/media"
+secret_loc = "freebooksbot_usercred.secret" #credentials for api interfacing with server
+server_api_link = "https://botsin.space/api/v2/media" #api link for media uploads only!
 
 #Class to pull the information from sources and frame into toots
 class TootFramer():
@@ -57,7 +58,7 @@ class TootFramer():
         #Get key post elements
         book_title = soup.find("td",{"itemprop":"headline"}).text
         book_author_raw = soup.find("a",{"itemprop":"creator"}).text
-        if len(book_author_raw.split(", ") > 1: #if an author has multiple parts to their name
+        if len(book_author_raw.split(", ")) > 1: #if an author has multiple parts to their name
             book_author = book_author_raw.split(", ")[1] + " " + book_author_raw.split(", ")[0] #reorder to firstname lastname
         else: #if just one author
             book_author = book_author_raw
@@ -77,6 +78,7 @@ else: #for now, pull from Project Gutenburg the rest of the time
     [prepared_toot,media_link] = TootFramer.gutenburg()
 
 #Now, for the tooting!
-mastodon = Mastodon(access_token = secret_loc) #create a Mastodon interface object, login
-media_id = TootFramer.upload_image_from_link(media_link, secret_loc,application_name,server_api_link)
+secret = os.path.join(sys.path[0], secret_loc) #get full path for the secrets file (in same dir as this script)
+mastodon = Mastodon(access_token = secret) #create a Mastodon interface object, login
+media_id = TootFramer.upload_image_from_link(media_link,secret,application_name,server_api_link) #upload the image associated with the post
 mastodon.status_post(prepared_toot,media_ids=media_id) #post toot!
