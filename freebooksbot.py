@@ -5,7 +5,7 @@ from mastodon import Mastodon
 
 #Application variables
 application_name = "freebooksbot"
-secret_loc = "freebooksbot_usercred.secret"
+secret_loc = "./freebooksbot_usercred.secret"
 server_api_link = "https://botsin.space/api/v2/media"
 
 #Class to pull the information from sources and frame into toots
@@ -44,18 +44,27 @@ class TootFramer():
 
         return [toot,book_cover]
 
-    #Framer for a random project Gutenburg book
-    def gutenburg(book_num):
+    #Framer for a random project Gutenberg book
+    def gutenburg():
+        #select a random book id from within the range of the Gutenberg project
+        book_num = random.randint(1,69500)
+        print(book_num)
+
         #scrape the page, push into BeautifulSoup object
         r = requests.get('https://www.gutenberg.org/ebooks/' + str(book_num))
         soup = BeautifulSoup(r.text, 'html.parser') 
 
         #Get key post elements
-        book_title = soup.find("title").text.split(" - ")[0]
+        book_title = soup.find("td",{"itemprop":"headline"}).text
+        book_author_raw = soup.find("a",{"itemprop":"creator"}).text
+        if len(book_author_raw.split(", ") > 1: #if an author has multiple parts to their name
+            book_author = book_author_raw.split(", ")[1] + " " + book_author_raw.split(", ")[0] #reorder to firstname lastname
+        else: #if just one author
+            book_author = book_author_raw
         book_cover = soup.find("img",{"class":"cover-art"})['src']
 
         #Build the post
-        toot = "From Project Gutenberg:\n" + book_title + "\n"
+        toot = "From Project Gutenberg:\n" + book_title + "\nby " + book_author + "\n"
         toot = toot + "\n\nGet it at: https://www.gutenberg.org/ebooks/" + str(book_num)
 
         return [toot,book_cover]
@@ -65,7 +74,7 @@ now = datetime.now()
 if now.hour in ['7','15','23']: #post the Packt free ebook 3 times a day
     [prepared_toot,media_link] = TootFramer.packt()
 else: #for now, pull from Project Gutenburg the rest of the time
-    [prepared_toot,media_link] = TootFramer.gutenburg(random.randint(1,69500))
+    [prepared_toot,media_link] = TootFramer.gutenburg()
 
 #Now, for the tooting!
 mastodon = Mastodon(access_token = secret_loc) #create a Mastodon interface object, login

@@ -1,0 +1,25 @@
+
+  File "/home/master/fedi_bots/freebooksbot.sh", line 2
+    python3 freebooksbot.py
+            ^
+SyntaxError: invalid syntax
+  File "/home/master/fedi_bots/freebooksbot.sh", line 2
+    python3 freebooksbot.py
+            ^
+SyntaxError: invalid syntax
+  File "/home/master/fedi_bots/freebooksbot.sh", line 2
+    python3 freebooksbot.py
+            ^
+SyntaxError: invalid syntax
+  File "/home/master/fedi_bots/freebooksbot.sh", line 2
+    python3 freebooksbot.py
+            ^
+SyntaxError: invalid syntax
+  File "/home/master/fedi_bots/freebooksbot.sh", line 2
+    python3 freebooksbot.py
+            ^
+SyntaxError: invalid syntax
+  File "/home/master/fedi_bots/freebooksbot.sh", line 2
+    python3 ./freebooksbot.py
+             ^
+SyntaxError: invalid syntax
