@@ -31,16 +31,16 @@ class TootFramer():
         soup = BeautifulSoup(r.text, 'html.parser')
 
         #Get key post elements
-        book_title = soup.find("h3", {"class":"product-info__title"}).text
+        book_title = soup.find("h3", {"class":"product-info__title"}).text.split(" - ")[1]
         book_author = soup.find("span", {"class":"product-info__author"}).text
-        book_date = soup.find("div", {"class":"free_learning__product_pages_date"}).text
-        book_pages = soup.find("div", {"class":"free_learning__product_pages"}).text
+        book_date = soup.find("div", {"class":"free_learning__product_pages_date"}).text.lstrip().rstrip()
+        book_pages = soup.find("div", {"class":"free_learning__product_pages"}).text.lstrip().rstrip()
         book_desc = soup.find("div",{"class":"free_learning__product_description"}).text
         book_cover = soup.find("img",{"class":"product-image"})['src']
 
         #Build the post
         toot = "From Packt Publishing:\n" + book_title + " " + book_author + "\n"
-        toot = toot + "(" + book_date + ", " + book_pages + "\n\n"
+        toot = toot + "(" + book_date + ", " + book_pages + ")\n\n"
         toot = toot + book_desc + "\n\nGet it at: https://www.packtpub.com/free-learning"
 
         return [toot,book_cover]
