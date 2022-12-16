@@ -72,7 +72,7 @@ class TootFramer():
 
 #Logic to actually drive the posting
 now = datetime.now()
-if now.hour in ['7','15','23']: #post the Packt free ebook 3 times a day
+if now.hour in [7,15,23]: #post the Packt free ebook 3 times a day
     [prepared_toot,media_link] = TootFramer.packt()
 else: #for now, pull from Project Gutenburg the rest of the time
     [prepared_toot,media_link] = TootFramer.gutenburg()

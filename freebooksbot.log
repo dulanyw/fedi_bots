@@ -1,1 +1,31 @@
 
+68837
+555
+9532
+Traceback (most recent call last):
+  File "/home/master/fedi_bots/freebooksbot.py", line 78, in <module>
+    [prepared_toot,media_link] = TootFramer.gutenburg()
+  File "/home/master/fedi_bots/freebooksbot.py", line 65, in gutenburg
+    book_cover = soup.find("img",{"class":"cover-art"})['src']
+TypeError: 'NoneType' object is not subscriptable
+2792
+66122
+13758
+33465
+6558
+62188
+58115
+52603
+13531
+22420
+4308
+21766
+7473
+32141
+4061
+50094
+48544
+61791
+21797
+17703
+1293
