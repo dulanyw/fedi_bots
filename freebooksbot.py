@@ -59,8 +59,15 @@ class TootFramer():
         book_title = soup.find("td",{"itemprop":"headline"}).text
         book_author_raw = soup.find("a",{"itemprop":"creator"}).text
         if len(book_author_raw.split(", ")) > 1: #if an author has multiple parts to their name
-            book_author = book_author_raw.split(", ")[1] + " " + book_author_raw.split(", ")[0] #reorder to firstname lastname
-        else: #if just one author
+            [author_last, author_first] = [book_author_raw.split(", ")[0],book_author_raw.split(", ")[1]]
+            if author_first.find("-") > -1: #possible one-named author with a date detected
+                if author_first.split("-")[0].isnumeric(): #yep, it's a date - just go with "last name"
+                    book_author = author_last
+                else: #false alarm - hyphenated last name
+                    book_author = author_first + " " + author_last
+            else: #Two names, hypen free
+                book_author = author_first + " " + author_last  #reorder to firstname lastname
+        else: #if just one author, no date
             book_author = book_author_raw
         book_cover = soup.find("img",{"class":"cover-art"})['src']
 
@@ -69,6 +76,17 @@ class TootFramer():
         toot = toot + "\n\nGet it at: https://www.gutenberg.org/ebooks/" + str(book_num)
 
         return [toot,book_cover]
+
+    #framer for resources from oercommons.org
+    def oercommons():
+        #a couple of levels to this:
+        #first, select a book topic from the set of reference numbers.
+        #Then, get the number of books for the topic, pick a random book.
+        #Update the selected page to be able to get the link to that book
+        #Then go to the book page and scrape the data for the link.
+
+        book_topic = random.randint(801,812) #get the topic number
+
 
 #Logic to actually drive the posting
 now = datetime.now()
