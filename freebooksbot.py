@@ -38,8 +38,18 @@ class TootFramer():
         book_desc = soup.find("div",{"class":"free_learning__product_description"}).text
         book_cover = soup.find("img",{"class":"product-image"})['src']
 
+        #Deal with presentation of multiple authors
+        if book_author.find(",") > -1: #we've got multiple authors!
+            ba_split = book_author.split(",")
+            book_author_list = ""
+            for i in range(len(ba_split)-1):  #for each author except last, strip newlines, recombine
+                book_author_list = book_author_list + ba_split[i].lstrip().rstrip() + ", "
+            book_author_list = book_author_list + ba_split[-1].lstrip().rstrip()
+        else: 
+            book_author_list = book_author
+
         #Build the post
-        toot = "From Packt Publishing:\n" + book_title + " " + book_author + "\n"
+        toot = "From Packt Publishing:\n" + book_title + "\n" + book_author_list + "\n"
         toot = toot + "(" + book_date + ", " + book_pages + ")\n\n"
         toot = toot + book_desc + "\n\nGet it at: https://www.packtpub.com/free-learning"
 

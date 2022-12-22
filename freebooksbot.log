@@ -92,3 +92,71 @@ TypeError: 'NoneType' object is not subscriptable
 43456
 32197
 59117
+41779
+27781
+69035
+57424
+63930
+22783
+25722
+24091
+22730
+34567
+11650
+169
+21555
+50366
+7887
+21378
+27281
+24862
+39783
+66106
+6357
+52250
+19747
+48831
+50004
+28778
+66191
+30581
+24700
+9496
+51512
+67479
+60634
+11038
+18352
+58876
+21181
+Traceback (most recent call last):
+  File "/home/master/fedi_bots/freebooksbot.py", line 96, in <module>
+    [prepared_toot,media_link] = TootFramer.gutenburg()
+  File "/home/master/fedi_bots/freebooksbot.py", line 72, in gutenburg
+    book_cover = soup.find("img",{"class":"cover-art"})['src']
+TypeError: 'NoneType' object is not subscriptable
+63326
+11828
+52484
+13834
+17297
+47514
+39890
+44245
+25137
+39865
+28607
+66576
+8516
+46047
+30402
+61199
+65894
+23925
+63593
+66000
+35970
+11182
+42619
+39472
+41810
